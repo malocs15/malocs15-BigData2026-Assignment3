@@ -9,6 +9,6 @@ P = dict(n_estimators=600, learning_rate=0.02, num_leaves=31, subsample=0.8, sub
          colsample_bytree=0.8, random_state=SEED, verbose=-1)
 o_r, p_r, _ = cv_reg(lambda: make_pipeline(StandardScaler(), Ridge()), X, y, Xte)
 o_l, p_l, _ = cv_reg(lambda: lgb.LGBMRegressor(**P), X, y, Xte)
-oof, pte = (o_r + o_l) / 2, (p_r + p_l) / 2; s, t = score(oof, y)
+oof, pte = (o_r + o_l) / 2, (p_r + p_l) / 2; t = fit_t_nm(oof, y); s = qwk(y, apply_t(oof, t))
 print(f'CV QWK {s:.4f}')
 pd.DataFrame({'id': te.id, 'quality': apply_t(pte, t)}).to_csv(sys.argv[1] if len(sys.argv) > 1 else 'submissions/v1_repro.csv', index=False)

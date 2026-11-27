@@ -11,7 +11,7 @@ python -m venv .venv && .venv/bin/pip install -r requirements.txt
 ## Reproduce the submissions
 ```bash
 .venv/bin/python src/sub_v1.py submissions/v1_ridge_lgbm_blend.csv   # v1: Ridge + LGBM blend
-.venv/bin/python src/train.py                                         # v2: submissions/v2_cbm.csv, submissions/v2_blend.csv
+.venv/bin/python src/train.py                                         # v2_* and v3_* submissions
 ```
 All randomness is seeded (CV seeds 42, 7, 2026), so the outputs are byte-identical.
 
@@ -20,6 +20,10 @@ All randomness is seeded (CV seeds 42, 7, 2026), so the outputs are byte-identic
 | `submissions/v1_ridge_lgbm_blend.csv` | Ridge + LightGBM, thresholds | 0.4138 | 0.4428 |
 | `submissions/v2_cbm.csv` | Concept-bottleneck model (intrinsic) | 0.4160 | 0.4329 |
 | `submissions/v2_blend.csv` | CBM + EBM + LightGBM, thresholds | 0.4166 | 0.4387 |
+| `submissions/v3_cbm.csv` | CBM, improved threshold search | 0.4198 | – |
+| `submissions/v3_cbm_lgbm.csv` | CBM + LightGBM, improved threshold search | 0.4215 | – |
+
+Thresholds: v1/v2 use Nelder-Mead only (`fit_t_nm`); v3 adds a coordinate search (`fit_t`), which escapes the local optimum where Nelder-Mead stops.
 
 ## Report figures and analysis
 ```bash

@@ -34,7 +34,20 @@ CONCEPTS = {
 qwk = lambda a, b: cohen_kappa_score(a, b, weights='quadratic')
 T0 = np.array([3.5, 4.5, 5.5, 6.5, 7.5])
 def apply_t(p, t): return np.digitize(p, np.sort(t)) + 3
-def fit_t(p, y): return np.sort(minimize(lambda t: -qwk(y, apply_t(p, t)), T0, method='Nelder-Mead').x)
+def fit_t_nm(p, y):
+    """Nelder-Mead from the naive cut points (used for submission v1; often stops in a local optimum)."""
+    return np.sort(minimize(lambda t: -qwk(y, apply_t(p, t)), T0, method='Nelder-Mead').x)
+
+def fit_t(p, y, iters=3, n_grid=80):
+    """Nelder-Mead, then coordinate search: each cut point is grid-searched between its neighbours."""
+    t = fit_t_nm(p, y)
+    for _ in range(iters):
+        for k in range(len(t)):
+            lo = t[k - 1] if k else p.min(); hi = t[k + 1] if k < len(t) - 1 else p.max()
+            cands = np.linspace(lo, hi, n_grid)[1:-1]
+            vals = [qwk(y, apply_t(p, np.r_[t[:k], v, t[k + 1:]])) for v in cands]
+            if max(vals) > qwk(y, apply_t(p, t)): t[k] = cands[int(np.argmax(vals))]
+    return t
 
 def folds(y, seed=SEED, k=5):
     return list(StratifiedKFold(k, shuffle=True, random_state=seed).split(np.zeros(len(y)), y))

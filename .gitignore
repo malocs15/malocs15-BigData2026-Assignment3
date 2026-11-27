@@ -10,3 +10,5 @@ course/
 *.pdf
 rules.txt
 dataset_description.txt
+scratch_exp/
+catboost_info/
