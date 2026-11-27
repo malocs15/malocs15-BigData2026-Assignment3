@@ -18,8 +18,8 @@ All randomness is seeded (CV seeds 42, 7, 2026), so the outputs are byte-identic
 | File | Model | CV QWK | Public LB |
 |---|---|---|---|
 | `submissions/v1_ridge_lgbm_blend.csv` | Ridge + LightGBM, thresholds | 0.4138 | 0.4428 |
-| `submissions/v2_cbm.csv` | Concept-bottleneck model (intrinsic) | 0.4160 | – |
-| `submissions/v2_blend.csv` | CBM + EBM + LightGBM, thresholds | 0.4166 | – |
+| `submissions/v2_cbm.csv` | Concept-bottleneck model (intrinsic) | 0.4160 | 0.4329 |
+| `submissions/v2_blend.csv` | CBM + EBM + LightGBM, thresholds | 0.4166 | 0.4387 |
 
 ## Report figures and analysis
 ```bash
