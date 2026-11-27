@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+src/_oof.pkl
+src/_preds_seeds.pkl
+# data & course material are not ours to redistribute
+*.csv
+!submissions/*.csv
+course/
+*.pdf
+rules.txt
+dataset_description.txt
