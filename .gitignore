@@ -12,3 +12,9 @@ rules.txt
 dataset_description.txt
 scratch_exp/
 catboost_info/
+report/*.aux
+report/*.log
+report/*.fls
+report/*.fdb_latexmk
+report/*.out
+report/report.pdf

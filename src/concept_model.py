@@ -11,9 +11,11 @@ G = dict(n_estimators=400, learning_rate=0.02, num_leaves=7, min_child_samples=8
          subsample=0.8, subsample_freq=1, random_state=SEED, verbose=-1)
 
 class ConceptBottleneck:
-    def __init__(self, concepts=CONCEPTS, inner=5, positive=True, seed=SEED):
-        self.concepts, self.inner, self.positive, self.seed = concepts, inner, positive, seed
-    def _g(self): return lgb.LGBMRegressor(**{**G, 'random_state': self.seed})
+    def __init__(self, concepts=CONCEPTS, inner=5, positive=True, seed=SEED, n_jobs=None):
+        self.concepts, self.inner, self.positive, self.seed, self.n_jobs = concepts, inner, positive, seed, n_jobs
+    def _g(self):
+        extra = {} if self.n_jobs is None else {'n_jobs': self.n_jobs}   # None keeps LightGBM's default
+        return lgb.LGBMRegressor(**{**G, 'random_state': self.seed, **extra})
     def fit(self, X, y):
         X = X.reset_index(drop=True); C = np.zeros((len(X), len(self.concepts)))
         # inner OOF concept scores so f is not trained on overfit concept scores
